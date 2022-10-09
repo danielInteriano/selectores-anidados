@@ -1,13 +1,15 @@
 <h3 class="mt-4">Selectores Anidados</h3>
 <hr />
-<form [formGroup]="formulario">
+<form [formGroup]="formulario" (ngSubmit)="guardar()">
   <!--selector de continente-->
   <div class="row mb-3">
     <div class="col">
       <label class="form-label">Continente</label>
       <select class="form-select" formControlName="continente">
-        <option value="">--Seleccione una opción--</option>
-        <option value="">opcion 1</option>
+        <option value="0" selected>--Seleccione una opción--</option>
+        <option *ngFor="let region of regiones" [value]="region | lowercase">
+          {{ region }}
+        </option>
       </select>
       <span class="text-danger" *ngIf="validarCampo('continente')"
         >Seleccione un continente.</span
@@ -36,6 +38,12 @@
       <span class="text-danger" *ngIf="validarCampo('frontera')"
         >Seleccione una frontera.</span
       >
+    </div>
+  </div>
+  <!--Boton-->
+  <div class="row">
+    <div class="col">
+      <button type="submit" class="btn btn-primary float-end">Guardar</button>
     </div>
   </div>
 </form>

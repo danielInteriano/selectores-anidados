@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { PaisesServiceService } from '../../services/paises-service.service';
 
 @Component({
   selector: 'app-selector-page',
@@ -13,9 +14,16 @@ export class SelectorPageComponent implements OnInit {
     frontera: ['', Validators.required],
   });
 
-  constructor(private fb: FormBuilder) {}
+  regiones: string[] = [];
 
-  ngOnInit(): void {}
+  constructor(
+    private fb: FormBuilder,
+    private paisesService: PaisesServiceService
+  ) {}
+
+  ngOnInit(): void {
+    this.regiones = this.paisesService.regiones;
+  }
 
   //función para mostrar mensajes error
   validarCampo(control: string) {
@@ -23,5 +31,10 @@ export class SelectorPageComponent implements OnInit {
       this.formulario.controls['control']?.errors &&
       this.formulario.controls['control']?.touched
     );
+  }
+
+  //función para guardar datos del formulario
+  guardar() {
+    console.log(this.formulario.value);
   }
 }
