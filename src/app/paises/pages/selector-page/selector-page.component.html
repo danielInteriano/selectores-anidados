@@ -1,0 +1,48 @@
+<h3 class="mt-4">Selectores Anidados</h3>
+<hr />
+<form [formGroup]="formulario">
+  <!--selector de continente-->
+  <div class="row mb-3">
+    <div class="col">
+      <label class="form-label">Continente</label>
+      <select class="form-select" formControlName="continente">
+        <option value="">--Seleccione una opción--</option>
+        <option value="">opcion 1</option>
+      </select>
+      <span class="text-danger" *ngIf="validarCampo('continente')"
+        >Seleccione un continente.</span
+      >
+    </div>
+  </div>
+  <!--selector de pais-->
+  <div class="row mb-3">
+    <div class="col">
+      <label class="form-label">País</label>
+      <select class="form-select" formControlName="pais">
+        <option value="">--Seleccione una opción--</option>
+      </select>
+      <span class="text-danger" *ngIf="validarCampo('pais')"
+        >Seleccione un país.</span
+      >
+    </div>
+  </div>
+  <!--Selector de frontera-->
+  <div class="row mb-3">
+    <div class="col">
+      <label class="form-label">Frontera</label>
+      <select class="form-select" formControlName="frontera">
+        <option value="">--Seleccione una opción--</option>
+      </select>
+      <span class="text-danger" *ngIf="validarCampo('frontera')"
+        >Seleccione una frontera.</span
+      >
+    </div>
+  </div>
+</form>
+
+<br /><br />
+<hr />
+
+<h3>Formulario</h3>
+<pre>Valid:{{ formulario.valid }}</pre>
+<pre>{{ formulario.value | json }}</pre>
