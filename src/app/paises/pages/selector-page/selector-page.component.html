@@ -22,6 +22,12 @@
       <label class="form-label">País</label>
       <select class="form-select" formControlName="pais">
         <option value="">--Seleccione una opción--</option>
+        <option
+          *ngFor="let pais of paisesPorContienente"
+          [value]="pais.alpha3Code"
+        >
+          {{ pais.name }}
+        </option>
       </select>
       <span class="text-danger" *ngIf="validarCampo('pais')"
         >Seleccione un país.</span

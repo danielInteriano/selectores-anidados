@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { PaisCode } from '../../interfaces/paises.interface';
 import { PaisesServiceService } from '../../services/paises-service.service';
 
 @Component({
@@ -15,6 +16,7 @@ export class SelectorPageComponent implements OnInit {
   });
 
   regiones: string[] = [];
+  paisesPorContienente: PaisCode[] = [];
 
   constructor(
     private fb: FormBuilder,
@@ -23,6 +25,19 @@ export class SelectorPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.regiones = this.paisesService.regiones;
+
+    //obtener el continente seleccionado
+    this.formulario.get('continente')?.valueChanges.subscribe((continente) => {
+      console.log(continente);
+
+      //obtener los paises de un continente seleccionado
+      this.paisesService
+        .obtenerPaisesPorRegion(continente)
+        .subscribe((paises) => {
+          this.paisesPorContienente = paises;
+          console.log(this.paisesPorContienente);
+        });
+    });
   }
 
   //función para mostrar mensajes error
