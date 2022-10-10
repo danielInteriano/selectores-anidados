@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { switchMap, tap } from 'rxjs';
 import { PaisCode } from '../../interfaces/paises.interface';
 import { PaisesServiceService } from '../../services/paises-service.service';
 
@@ -15,8 +16,14 @@ export class SelectorPageComponent implements OnInit {
     frontera: ['', Validators.required],
   });
 
+  //para llenar los select del formulario
   regiones: string[] = [];
-  paisesPorContienente: PaisCode[] = [];
+  paises: PaisCode[] = [];
+  fronteras: PaisCode[] = [];
+  fronterasNombre: string[] = [];
+
+  //Bandera para mensaje de cargando
+  cargando: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -26,18 +33,38 @@ export class SelectorPageComponent implements OnInit {
   ngOnInit(): void {
     this.regiones = this.paisesService.regiones;
 
-    //obtener el continente seleccionado
-    this.formulario.get('continente')?.valueChanges.subscribe((continente) => {
-      console.log(continente);
+    //obtener el continente seleccionado y luego los paises de ese continente
+    this.formulario
+      .get('continente')
+      ?.valueChanges.pipe(
+        tap(() => {
+          this.formulario.get('pais')?.reset('');
+          this.cargando = true;
+        }),
+        switchMap((region) => this.paisesService.obtenerPaisesPorRegion(region))
+      )
+      .subscribe((paises) => {
+        this.paises = paises;
+        this.cargando = false;
+      });
 
-      //obtener los paises de un continente seleccionado
-      this.paisesService
-        .obtenerPaisesPorRegion(continente)
-        .subscribe((paises) => {
-          this.paisesPorContienente = paises;
-          console.log(this.paisesPorContienente);
-        });
-    });
+    //obtener el país seleccionado y luego los paises fronterizos
+    this.formulario
+      .get('pais')
+      ?.valueChanges.pipe(
+        tap(() => {
+          this.formulario.get('frontera')?.reset('');
+          this.cargando = true;
+        }),
+        switchMap((codigo) => this.paisesService.obtenerPaisPorCodigo(codigo)),
+        switchMap((pais) =>
+          this.paisesService.obtenerPaisesFronterizosPorCodigos(pais?.borders!)
+        )
+      )
+      .subscribe((paises) => {
+        this.fronteras = paises;
+        this.cargando = false;
+      });
   }
 
   //función para mostrar mensajes error

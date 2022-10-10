@@ -17,14 +17,14 @@
     </div>
   </div>
   <!--selector de pais-->
-  <div class="row mb-3">
+  <div class="row mb-3" *ngIf="paises.length !== 0">
     <div class="col">
       <label class="form-label">País</label>
       <select class="form-select" formControlName="pais">
         <option value="">--Seleccione una opción--</option>
         <option
-          *ngFor="let pais of paisesPorContienente"
-          [value]="pais.alpha3Code"
+          *ngFor="let pais of paises"
+          [value]="pais.alpha3Code | lowercase"
         >
           {{ pais.name }}
         </option>
@@ -35,17 +35,33 @@
     </div>
   </div>
   <!--Selector de frontera-->
-  <div class="row mb-3">
+  <div class="row mb-3" *ngIf="fronteras.length !== 0">
     <div class="col">
-      <label class="form-label">Frontera</label>
+      <label class="form-label">Países fronterizos</label>
       <select class="form-select" formControlName="frontera">
         <option value="">--Seleccione una opción--</option>
+        <option
+          *ngFor="let frontera of fronteras"
+          [value]="frontera.alpha3Code"
+        >
+          {{ frontera.name }}
+        </option>
       </select>
       <span class="text-danger" *ngIf="validarCampo('frontera')"
         >Seleccione una frontera.</span
       >
     </div>
   </div>
+
+  <!--Mensaje cargando-->
+  <div class="row" *ngIf="cargando">
+    <div class="col">
+      <div class="spinner-border text-success" role="status">
+        <span class="visually-hidden">Cargando...</span>
+      </div>
+    </div>
+  </div>
+
   <!--Boton-->
   <div class="row">
     <div class="col">
