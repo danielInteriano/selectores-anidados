@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { combineLatest, Observable, of } from 'rxjs';
-import { Pais, PaisCode } from '../interfaces/paises.interface';
+import { infoPais, Pais, PaisCode } from '../interfaces/paises.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -13,6 +13,8 @@ export class PaisesServiceService {
   get regiones(): string[] {
     return [...this._regiones];
   }
+
+  
 
   constructor(private http: HttpClient) {}
 
@@ -52,5 +54,12 @@ export class PaisesServiceService {
     });
 
     return combineLatest(peticiones);
+  }
+
+  //servicio para obtener la información de un país para mostrar en el Card
+  obtenerInfoPais(codigo: string): Observable<infoPais> {
+    return this.http.get<infoPais>(
+      `${this.baseUrl}alpha/${codigo}?fields=region,name,capital,population,area,flag`
+    );
   }
 }

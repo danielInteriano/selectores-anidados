@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { switchMap, tap } from 'rxjs';
-import { PaisCode } from '../../interfaces/paises.interface';
+import { infoPais, PaisCode } from '../../interfaces/paises.interface';
 import { PaisesServiceService } from '../../services/paises-service.service';
 
 @Component({
@@ -20,7 +20,17 @@ export class SelectorPageComponent implements OnInit {
   regiones: string[] = [];
   paises: PaisCode[] = [];
   fronteras: PaisCode[] = [];
-  fronterasNombre: string[] = [];
+  codigo: string = '';
+
+  //para mostrar en la Card
+  infoPais: infoPais = {
+    region: '',
+    name: '',
+    capital: '',
+    population: 0,
+    area: 0,
+    flag: '',
+  };
 
   //Bandera para mensaje de cargando
   cargando: boolean = false;
@@ -64,6 +74,15 @@ export class SelectorPageComponent implements OnInit {
       .subscribe((paises) => {
         this.fronteras = paises;
         this.cargando = false;
+        this.codigo = this.formulario.controls['pais'].value;
+
+        //obtener informacion para mostrar en el Card
+        this.paisesService
+          .obtenerInfoPais(this.codigo)
+          .subscribe((informacion) => {
+            this.infoPais = informacion;
+            console.log(this.infoPais);
+          });
       });
   }
 

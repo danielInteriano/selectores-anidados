@@ -4,6 +4,15 @@ export interface PaisCode {
   independent: boolean;
 }
 
+export interface infoPais {
+  region: string;
+  name: string;
+  capital: string;
+  population: number;
+  area: number;
+  flag: string;
+}
+
 export interface Pais {
   name: string;
   topLevelDomain: string[];

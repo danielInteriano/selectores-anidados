@@ -1,74 +1,105 @@
 <h3 class="mt-4">Selectores Anidados</h3>
 <hr />
-<form [formGroup]="formulario" (ngSubmit)="guardar()">
-  <!--selector de continente-->
-  <div class="row mb-3">
-    <div class="col">
-      <label class="form-label">Continente</label>
-      <select class="form-select" formControlName="continente">
-        <option value="0" selected>--Seleccione una opción--</option>
-        <option *ngFor="let region of regiones" [value]="region | lowercase">
-          {{ region }}
-        </option>
-      </select>
-      <span class="text-danger" *ngIf="validarCampo('continente')"
-        >Seleccione un continente.</span
-      >
-    </div>
-  </div>
-  <!--selector de pais-->
-  <div class="row mb-3" *ngIf="paises.length !== 0">
-    <div class="col">
-      <label class="form-label">País</label>
-      <select class="form-select" formControlName="pais">
-        <option value="">--Seleccione una opción--</option>
-        <option
-          *ngFor="let pais of paises"
-          [value]="pais.alpha3Code | lowercase"
-        >
-          {{ pais.name }}
-        </option>
-      </select>
-      <span class="text-danger" *ngIf="validarCampo('pais')"
-        >Seleccione un país.</span
-      >
-    </div>
-  </div>
-  <!--Selector de frontera-->
-  <div class="row mb-3" *ngIf="fronteras.length !== 0">
-    <div class="col">
-      <label class="form-label">Países fronterizos</label>
-      <select class="form-select" formControlName="frontera">
-        <option value="">--Seleccione una opción--</option>
-        <option
-          *ngFor="let frontera of fronteras"
-          [value]="frontera.alpha3Code"
-        >
-          {{ frontera.name }}
-        </option>
-      </select>
-      <span class="text-danger" *ngIf="validarCampo('frontera')"
-        >Seleccione una frontera.</span
-      >
-    </div>
-  </div>
 
-  <!--Mensaje cargando-->
-  <div class="row" *ngIf="cargando">
-    <div class="col">
-      <div class="spinner-border text-success" role="status">
-        <span class="visually-hidden">Cargando...</span>
+<div class="container">
+  <div class="row">
+    <div class="col-6">
+      <form [formGroup]="formulario" (ngSubmit)="guardar()">
+        <!--selector de continente-->
+        <div class="row mb-3">
+          <div class="col">
+            <label class="form-label">Continente</label>
+            <select class="form-select" formControlName="continente">
+              <option value="0" selected>--Seleccione una opción--</option>
+              <option
+                *ngFor="let region of regiones"
+                [value]="region | lowercase"
+              >
+                {{ region }}
+              </option>
+            </select>
+            <span class="text-danger" *ngIf="validarCampo('continente')"
+              >Seleccione un continente.</span
+            >
+          </div>
+        </div>
+        <!--selector de pais-->
+        <div class="row mb-3" *ngIf="paises.length !== 0">
+          <div class="col">
+            <label class="form-label">País</label>
+            <select class="form-select" formControlName="pais">
+              <option value="">--Seleccione una opción--</option>
+              <option
+                *ngFor="let pais of paises"
+                [value]="pais.alpha3Code | lowercase"
+              >
+                {{ pais.name }}
+              </option>
+            </select>
+            <span class="text-danger" *ngIf="validarCampo('pais')"
+              >Seleccione un país.</span
+            >
+          </div>
+        </div>
+        <!--Selector de frontera-->
+        <div class="row mb-3" *ngIf="fronteras.length !== 0">
+          <div class="col">
+            <label class="form-label">Países fronterizos</label>
+            <select class="form-select" formControlName="frontera">
+              <option value="">--Seleccione una opción--</option>
+              <option
+                *ngFor="let frontera of fronteras"
+                [value]="frontera.alpha3Code"
+              >
+                {{ frontera.name }}
+              </option>
+            </select>
+            <span class="text-danger" *ngIf="validarCampo('frontera')"
+              >Seleccione una frontera.</span
+            >
+          </div>
+        </div>
+
+        <!--Mensaje cargando-->
+        <div class="row" *ngIf="cargando">
+          <div class="col">
+            <div class="spinner-border text-success" role="status">
+              <span class="visually-hidden">Cargando...</span>
+            </div>
+          </div>
+        </div>
+
+        <!--Boton-->
+        <div class="row">
+          <div class="col">
+            <button type="submit" class="btn btn-primary float-end">
+              Guardar
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="col-6">
+      <div class="card" style="width: 18rem; background-color: #a2d4f4">
+        <img src="{{ infoPais.flag }}" class="card-img-top" alt="pais" />
+        <div class="card-body">
+          <h3 class="card-title">País: {{ infoPais.name }}</h3>
+          <h6 class="card-subtitle mb-2 text-muted">
+            Capital: {{ infoPais.capital }}
+          </h6>
+          <h6 class="card-subtitle mb-2 text-muted">
+            Continente: {{ infoPais.region }}
+          </h6>
+          <hr />
+          <p class="card-text">Extensión: {{ infoPais.area | number }} m²</p>
+          <p class="card-text">
+            Poblanción: {{ infoPais.population | number }} habitantes
+          </p>
+        </div>
       </div>
     </div>
   </div>
-
-  <!--Boton-->
-  <div class="row">
-    <div class="col">
-      <button type="submit" class="btn btn-primary float-end">Guardar</button>
-    </div>
-  </div>
-</form>
+</div>
 
 <br /><br />
 <hr />
